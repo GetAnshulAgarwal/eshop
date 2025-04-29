@@ -1,12 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+import '../model/offer.dart';
+import '../widget/ad_banner.dart';
+import '../widget/offer_card.dart';
+import '../widget/offer_section.dart';
 
+// Mock data for UI testing
+class MockData {
+  static List<Map<String, dynamic>> getMockProducts() {
+    return [
+      {'name': 'Rice', 'image': 'https://picsum.photos/200?random=1'},
+      {'name': 'Flour', 'image': 'https://picsum.photos/200?random=2'},
+      {'name': 'Sugar', 'image': 'https://picsum.photos/200?random=3'},
+      {'name': 'Oil', 'image': 'https://picsum.photos/200?random=4'},
+      {'name': 'Salt', 'image': 'https://picsum.photos/200?random=5'},
+      {'name': 'Pasta', 'image': 'https://picsum.photos/200?random=6'},
+    ];
+  }
+
+  static List<Offer> getMockOffers() {
+    return [
+      Offer(
+        title: "upto 30% off",
+        imageUrls: [
+          'assets/images/veg.png',
+          'assets/images/banana.png',
+          'assets/images/veg.png',
+          'assets/images/banana.png',
+        ],
+        moreCount: 20,
+      ),
+      Offer(
+        title: "buy one get one",
+        imageUrls: [
+          'assets/images/veg.png',
+          'assets/images/banana.png',
+          'assets/images/veg.png',
+          'assets/images/banana.png', // Bananas
+        ],
+        moreCount: 15,
+      ),
+    ];
+  }
+}
+
+// -----------------------------------------------------------------------------
+// HomePage
+// -----------------------------------------------------------------------------
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -14,41 +59,48 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String location = "Fetching location...";
   List<dynamic> products = [];
+  late List<Offer> offers;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _getLocation();
-    _fetchProducts();
+    _loadMockData();
+  }
+
+  void _loadMockData() {
+    // Simulate network delay
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        products = MockData.getMockProducts();
+        offers = MockData.getMockOffers();
+        isLoading = false;
+      });
+    });
   }
 
   Future<void> _getLocation() async {
     try {
       LocationPermission permission = await Geolocator.requestPermission();
-      Position position = await Geolocator.getCurrentPosition();
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        setState(() => location = 'Location permission denied');
+        return;
+      }
+      Position pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
       );
-      Placemark place = placemarks[0];
+      final placemarks = await placemarkFromCoordinates(
+        pos.latitude,
+        pos.longitude,
+      );
+      final place = placemarks.first;
       setState(() {
         location = "${place.locality}, ${place.administrativeArea}";
       });
     } catch (e) {
-      setState(() {
-        location = "Location not found";
-      });
-    }
-  }
-
-  Future<void> _fetchProducts() async {
-    final response = await http.get(Uri.parse("https://yourapi.com/products"));
-    if (response.statusCode == 200) {
-      setState(() {
-        products = jsonDecode(response.body);
-      });
-    } else {
-      // handle error
+      setState(() => location = "Location not found");
     }
   }
 
@@ -66,6 +118,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Icon(Icons.location_pin, color: Colors.red),
+                    SizedBox(width: 4),
                     Text(location),
                     Icon(Icons.keyboard_arrow_down),
                   ],
@@ -79,9 +132,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+
             SizedBox(height: 15),
 
-            // Search Box
+            // Search Bar
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[200],
@@ -96,10 +150,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-
             SizedBox(height: 10),
 
-            // Chips
+            // Filter Chips
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -111,49 +164,51 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(width: 8),
                   Chip(label: Text("Fruity Cakes 🍰")),
+                  SizedBox(width: 8),
                   Chip(label: Text("🍩")),
+                  SizedBox(width: 8),
                   Chip(label: Text("🍕")),
+                  SizedBox(width: 8),
                   Chip(label: Text("🍗")),
+                  SizedBox(width: 8),
                   TextButton(onPressed: () {}, child: Text("See More →")),
                 ],
               ),
             ),
 
-            SizedBox(height: 10),
+            // Ad banner
+            SizedBox(
+              height: 150,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 3,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                itemBuilder:
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: AdBanner(
+                        alignment: Alignment.bottomLeft,
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Banner #$index tapped!')),
+                          );
 
-            // Banner (Static Placeholder)
-            Container(
-              height: 140,
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    height: 25,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.red[800],
-                      borderRadius: BorderRadius.circular(20),
+                          // You can also navigate:
+                          // Navigator.push(context, MaterialPageRoute(builder: (_) => YourTargetPage()));
+                        },
+                      ),
                     ),
-                  ),
-                ),
               ),
             ),
 
-            SizedBox(height: 15),
-
-            // Offers (Static Titles, Dynamic Content)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildOfferCard("Upto 30% off"),
-                _buildOfferCard("Buy one get one"),
-              ],
-            ),
+            // Offers Section
+            SizedBox(height: 16),
+            isLoading
+                ? SizedBox(
+                  height: 220,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+                : OffersSection(offers: offers),
 
             SizedBox(height: 15),
 
@@ -169,62 +224,57 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
 
-            // Product Horizontal Scroll
+            // Products Horizontal Scroll
             SizedBox(
               height: 110,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final item = products[index];
-                  return Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey[200],
-                        ),
-                        child: Image.network(
-                          item['image'],
-                          width: 50,
-                          height: 50,
-                        ),
+              child:
+                  isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: products.length,
+                        itemBuilder: (ctx, i) {
+                          final item = products[i];
+                          return Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey[200],
+                                ),
+                                child: ClipOval(
+                                  child: Image.network(
+                                    item['image'],
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (_, __, ___) => Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.grey.shade300,
+                                          child: Center(
+                                            child: Text(
+                                              item['name'].substring(0, 1),
+                                              style: TextStyle(
+                                                color: Colors.grey.shade700,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(item['name'] ?? ''),
+                            ],
+                          );
+                        },
                       ),
-                      Text(item['name'] ?? 'Dry Fruit'),
-                    ],
-                  );
-                },
-              ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOfferCard(String title) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 4),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.orange[200],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Text(title),
-            SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/veg.png', width: 40, height: 40),
-                Image.asset('assets/images/banana.png', width: 40, height: 40),
-              ],
-            ),
-            Text("+150 more", style: TextStyle(fontSize: 10)),
           ],
         ),
       ),

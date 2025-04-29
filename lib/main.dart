@@ -1,6 +1,5 @@
-import 'package:eshop/navigation.dart';
-import 'package:eshop/screen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:eshop/navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,9 +8,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MainNavigation(), // Launch the app with navigation bar
+    );
   }
 }

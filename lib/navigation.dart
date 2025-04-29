@@ -1,11 +1,17 @@
+import 'package:eshop/screen/home_screen.dart';
 import 'package:flutter/material.dart';
+// TODO: Create these or replace with your real pages
+// import 'direction_page.dart';
+// import 'dashboard_page.dart';
+// import 'cart_page.dart';
+// import 'settings_page.dart';
 
-class CustomNavBarDemo extends StatefulWidget {
+class MainNavigation extends StatefulWidget {
   @override
-  _CustomNavBarDemoState createState() => _CustomNavBarDemoState();
+  _MainNavigationState createState() => _MainNavigationState();
 }
 
-class _CustomNavBarDemoState extends State<CustomNavBarDemo> {
+class _MainNavigationState extends State<MainNavigation> {
   int selectedIndex = 0;
 
   final List<IconData> icons = [
@@ -18,17 +24,25 @@ class _CustomNavBarDemoState extends State<CustomNavBarDemo> {
 
   final List<String> labels = [
     'Home',
-    'direction',
-    'dashboard',
-    'cart',
-    'setting',
+    'Direction',
+    'Dashboard',
+    'Cart',
+    'Setting',
+  ];
+
+  final List<Widget> pages = [
+    HomePage(), // You already have this
+    Placeholder(), // TODO: Replace with DirectionPage()
+    Placeholder(), // TODO: Replace with DashboardPage()
+    Placeholder(), // TODO: Replace with CartPage()
+    Placeholder(), // TODO: Replace with SettingsPage()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Text("Page ${selectedIndex + 1}")),
+      body: pages[selectedIndex],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Container(
