@@ -1,6 +1,7 @@
 class Offer {
   final String title;
   final List<String> imageUrls; // exactly 4 items
+
   final int moreCount;
 
   Offer({

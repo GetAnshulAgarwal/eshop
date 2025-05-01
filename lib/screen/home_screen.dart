@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'dart:convert';
 
 import '../model/offer.dart';
-import '../widget/ad_banner.dart';
-import '../widget/offer_card.dart';
+import '../banners/ad_banner.dart';
 import '../widget/offer_section.dart';
 
 // Mock data for UI testing
@@ -51,7 +49,7 @@ class MockData {
 // HomePage
 // -----------------------------------------------------------------------------
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
   @override
   _HomePageState createState() => _HomePageState();
 }
