@@ -1,6 +1,6 @@
+import 'package:eshop/screen/booking_screen.dart';
 import 'package:eshop/screen/cart_screen.dart';
 import 'package:eshop/screen/category_screen.dart';
-import 'package:eshop/screen/direction_screen.dart';
 import 'package:eshop/screen/home_screen.dart';
 import 'package:eshop/screen/setting_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<String> labels = [
     'Home',
-    'Direction',
+    'Booking',
     'Categories',
     'Cart',
     'Profile',
@@ -47,14 +47,10 @@ class _MainNavigationState extends State<MainNavigation> {
     super.initState();
     pages = [
       HomePage(),
-      DirectionScreen(),
+      VanRoutePage(),
       CategoryScreen(),
-      CartScreen(),
-      SettingScreen(
-        userName: widget.userName,
-        email: widget.email,
-        phone: widget.phone,
-      ),
+      CheckoutScreen(),
+      SettingScreen(),
     ];
   }
 

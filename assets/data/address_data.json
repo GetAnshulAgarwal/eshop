@@ -1,0 +1,42 @@
+[
+  {
+    "id": "addr_001",
+    "fullAddress": "Sihag Home, House Number 223/23, Near Chungi, Arya Nagar, Hansi - 125033, Haryana, India",
+    "label": "Home",
+    "type": "home",
+    "latitude": 29.1088,
+    "longitude": 75.9642
+  },
+  {
+    "id": "addr_002",
+    "fullAddress": "Sihag Home, House Number 223/23, Near Chungi, Arya Nagar, Hansi - 125033, Haryana, India",
+    "label": "Work",
+    "type": "work",
+    "latitude": 29.1090,
+    "longitude": 75.9645
+  },
+  {
+    "id": "addr_003",
+    "fullAddress": "Sihag Home, House Number 223/23, Near Chungi, Arya Nagar, Hansi - 125033, Haryana, India",
+    "label": "ARYA NAGAR",
+    "type": "other",
+    "latitude": 29.1085,
+    "longitude": 75.9638
+  },
+  {
+    "id": "addr_004",
+    "fullAddress": "Block C, Sector 62, Noida, Uttar Pradesh 201301, India",
+    "label": "Office",
+    "type": "work",
+    "latitude": 28.6141,
+    "longitude": 77.3614
+  },
+  {
+    "id": "addr_005",
+    "fullAddress": "2nd Floor, Landmark Building, MG Road, Gurugram, Haryana 122001, India",
+    "label": "Client Office",
+    "type": "other",
+    "latitude": 28.4747,
+    "longitude": 77.0266
+  }
+]

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'user_data.dart'; // Import for user data utility
 
 class OtpScreen extends StatefulWidget {
   final String phone;
@@ -13,6 +15,12 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final TextEditingController _otpController = TextEditingController();
   bool _isVerifying = false;
+
+  @override
+  void dispose() {
+    _otpController.dispose();
+    super.dispose();
+  }
 
   Future<void> _verifyOtp() async {
     final otp = _otpController.text.trim();
@@ -37,9 +45,22 @@ class _OtpScreenState extends State<OtpScreen> {
 
       final data = jsonDecode(response.body);
       if (response.statusCode == 200 && data['success'] == true) {
-        // You can now create an account or navigate to home
+        // Save user data to SharedPreferences
+        final userData = UserData();
+        await userData.savePhone(widget.phone);
+
+        // Save other user data from the response if available
+        if (data['user'] != null) {
+          if (data['user']['name'] != null) {
+            await userData.saveName(data['user']['name']);
+          }
+          if (data['user']['email'] != null) {
+            await userData.saveEmail(data['user']['email']);
+          }
+        }
+
+        // Navigate to main screen
         Navigator.pushReplacementNamed(context, '/main');
-        // Success logic
       } else {
         print('Server error: ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -51,6 +72,8 @@ class _OtpScreenState extends State<OtpScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Network error: $e')));
+    } finally {
+      setState(() => _isVerifying = false);
     }
   }
 
@@ -83,6 +106,15 @@ class _OtpScreenState extends State<OtpScreen> {
                 Text(
                   'Enter the verification code sent to your phone',
                   style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.phone,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 40),
                 // OTP Input as 6 boxes
@@ -171,6 +203,26 @@ class _OtpScreenState extends State<OtpScreen> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      // Implement resend OTP logic
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('OTP resent successfully'),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Resend OTP',
+                      style: TextStyle(
+                        color: const Color(0xFF8B1A1A),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

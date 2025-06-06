@@ -1,0 +1,117 @@
+{
+  "total_rewards": 1000,
+  "currency_symbol": "$",
+  "sponsored_ad": {
+    "title": "Save 20% on Organic Produce",
+    "description": "Limited time offer on all fresh organic fruits and vegetables. Shop now!",
+    "image_url": "assets/images/refer.png",
+    "background_color": "#8B0000",
+    "action_url": "https://groceryonwheels.com/organic-sale",
+    "reward_code": "REWARD123"
+  },
+  "rewards": [
+    {
+      "id": "r1",
+      "title": "Fresh Fruits Bundle",
+      "detail": "Get a seasonal fruit basket at 30% off",
+      "company_name": "FreshFarms Inc.",
+      "expiry_days": 5,
+      "image_url": "assets/images/refer.png",
+      "status": "active",
+      "reward_code": "REWARD123",
+      "how_to_claim": [
+        "The Grocery On Wheels app is a smart, intuitive platform designed to enhance last-mile grocery delivery through our mobile van network.",
+        "Select the Fresh Fruits Bundle from your rewards page.",
+        "Apply the discount at checkout when purchasing any fruit basket worth $20 or more.",
+        "Ensure you have a minimum order value of $50 to redeem this reward."
+      ],
+      "terms_conditions": "Valid on purchases above $50. Cannot be combined with other offers."
+    },
+    {
+      "id": "r2",
+      "title": "Dairy Products Discount",
+      "detail": "15% off on all dairy products",
+      "company_name": "Pure Dairy Co.",
+      "expiry_days": 3,
+      "image_url": "assets/images/refer.png",
+      "status": "active",
+      "reward_code": "REWARD123",
+
+      "how_to_claim": [
+        "Tap on this reward to activate it before checkout.",
+        "Add dairy products to your cart totaling at least $15.",
+        "Discount will be automatically applied at checkout.",
+        "Offer valid once per customer."
+      ],
+      "terms_conditions": "Valid on dairy products only. Minimum purchase of $15 required."
+    },
+    {
+      "id": "r3",
+      "title": "Breakfast Cereals Offer",
+      "detail": "Buy 1 Get 1 Free on selected cereals",
+      "company_name": "Morning Foods",
+      "expiry_days": 7,
+      "image_url": "assets/images/refer.png",
+      "status": "active",
+      "reward_code": "REWARD123",
+
+      "how_to_claim": [
+        "Browse the cereals section in our app.",
+        "Add two of the same participating cereal products to your cart.",
+        "The discount will be applied automatically during checkout.",
+        "Limited to one free item per order."
+      ],
+      "terms_conditions": "Applicable only on marked items. Second item must be of equal or lesser value."
+    },
+    {
+      "id": "r4",
+      "title": "Baking Essentials",
+      "detail": "25% off baking ingredients",
+      "company_name": "Baker's Joy",
+      "reward_code": "REWARD123",
+
+      "expiry_days": 10,
+      "image_url": "assets/images/refer.png",
+      "status": "expired",
+      "how_to_claim": [
+        "This offer has expired and can no longer be claimed.",
+        "Check back soon for new offers on baking goods."
+      ],
+      "terms_conditions": "This offer is no longer valid."
+    },
+    {
+      "id": "r5",
+      "title": "Healthy Snacks Pack",
+      "detail": "Free delivery on snack bundles",
+      "company_name": "Nutri Snacks",
+      "reward_code": "REWARD12",
+      "expiry_days": 6,
+      "image_url": "assets/images/refer.png",
+      "status": "active",
+      "how_to_claim": [
+        "Add the Healthy Snacks Pack to your cart.",
+        "Proceed to checkout and the delivery fee will be waived.",
+        "Minimum order value must be $30.",
+        "Available for all delivery slots."
+      ],
+      "terms_conditions": "Valid on orders above $30. Free delivery applies to standard delivery slots only."
+    },
+    {
+      "id": "r6",
+      "title": "Kitchen Essentials",
+      "detail": "10% off kitchenware products",
+      "company_name": "Home Chef",
+      "expiry_days": 8,
+      "image_url": "assets/images/refer.png",
+      "status": "active",
+      "reward_code": "REWARD123",
+      "how_to_claim": [
+        "Browse the kitchenware section in our app.",
+        "Add eligible products to your cart.",
+        "Apply this reward at checkout to receive 10% off.",
+        "Maximum discount is $20."
+      ],
+      "terms_conditions": "Excludes electrical appliances. Maximum discount of $20 per order."
+    }
+  ]
+}
